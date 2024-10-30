@@ -10,9 +10,9 @@ script_name("Arizona Tools Bonus")
 script_authors("millka")
 script_version_number(127)
 
-BETA = false
+BETA = true
 
-script_version(("0.0.2 %s"):format(BETA and "Beta" or "Release"))
+script_version("0.0.1")
 script_url("t.me/arztool_bbot")
 script_properties("work-in-pause")
 require("moonloader")
@@ -59,6 +59,8 @@ local var_0_18 = setmetatable(var_0_6, {
 		end)
 	end
 })
+
+
 
 function tonumbers(arg_3_0, ...)
 	for iter_3_0, iter_3_1 in ipairs(arg_3_0) do
@@ -531,7 +533,7 @@ local var_0_31 = {
 local var_0_32 = {}
 
 var_0_26._MODKEYS = var_0_31
-var_0_26._VERSION = "1.2.0"
+var_0_26._VERSION = "0.0.1"
 var_0_26._SETTINGS = {
 	waitKeysMessage = "Нажмите",
 	noKeysMessage = "Не назначено"
@@ -22362,6 +22364,7 @@ function getGameProject()
 	return nil
 end
 
+
 function main()
 	assert(isSampLoaded(), "SA:MP is required!")
 
@@ -30610,7 +30613,7 @@ function update.check(arg_480_0)
 	local var_480_2
 
 	if BETA then
-		var_480_1 = "https://raw.githubusercontent.com/ToTWill/arztools/refs/heads/main/update/version.json"
+		var_480_1 = "https://api.arztools.tech/tools/arizona/beta/pc/version.json"
 		var_480_2 = {
 			headers = {
 				["user-agent"] = net.user_agent
@@ -30669,6 +30672,7 @@ function update.check(arg_480_0)
 		return var_480_3(arg_483_0)
 	end)
 end
+
 
 function update.download()
 	win.main.v = false
@@ -34454,29 +34458,10 @@ function mainSettingsRender()
 	var_0_7.SameLine(380)
 	var_0_7.BeginGroup()
 	var_0_7.PushFont(fontC[19])
-	var_0_7.TextColored(var_0_7.GetStyle().Colors[var_0_7.Col.ButtonActive], var_0_19("Информация об аккаунте"))
 	var_0_7.PopFont()
 	var_0_7.BeginChild("##ARZTAUTH", var_0_7.ImVec2(360, 90), false)
 	var_0_7.Spacing()
 	var_0_7.ImageRounded(var_0_48.avatar, 80)
-
-	if var_0_7.IsItemHovered() then
-		var_0_7.PushFont(fontC[14])
-
-		local var_511_7 = var_0_7.GetItemRectMin()
-		local var_511_8 = var_0_7.GetWindowDrawList()
-		local var_511_9 = var_0_19("Профиль")
-		local var_511_10 = var_0_7.CalcTextSize(var_511_9)
-		local var_511_11 = var_0_7.ImVec2(var_511_7.x + 40, var_511_7.y + 40)
-
-		var_511_8:AddCircleFilled(var_511_11, 37, 1610612736, 36)
-		var_511_8:AddText(var_0_7.ImVec2(var_511_11.x - var_511_10.x / 2, var_511_11.y - var_511_10.y / 2), 4294967295, var_511_9)
-		var_0_7.PopFont()
-	end
-
-	if var_0_7.IsItemClicked() then
-		var_0_16.ShellExecuteA(nil, "open", "https://auth.arztools.tech/profile", nil, nil, 1)
-	end
 
 	var_0_7.SameLine(nil, 15)
 	var_0_7.BeginGroup()
@@ -34505,93 +34490,6 @@ function mainSettingsRender()
 	var_0_7.AddCursorPos(0, 3)
 	var_0_7.BeginChild("##ProfileBadges", var_0_7.ImVec2(var_0_7.GetContentRegionAvail().x, 20), false, var_0_7.WindowFlags.NoScrollWithMouse + var_0_7.WindowFlags.NoScrollbar)
 
-	if #net.auth.user.badges == 0 or #net.auth.user.badges == #quick.hided_badges then
-		var_0_7.PushFont(fontC[14])
-		var_0_7.TextDisabled(var_0_19("Наград пока-что нет.."))
-		var_0_7.PopFont()
-	else
-		var_0_7.BeginGroup()
-
-		for iter_511_11, iter_511_12 in ipairs(net.auth.user.badges) do
-			local var_511_15 = fa[tostring(iter_511_12.icon)]
-			local var_511_16
-
-			for iter_511_13, iter_511_14 in ipairs(quick.hided_badges) do
-				if iter_511_14 == iter_511_12.id then
-					var_511_16 = iter_511_13
-
-					break
-				end
-			end
-
-			if var_511_15 ~= nil and not var_511_16 then
-				local var_511_17 = tonumber(iter_511_12.color) or 16777215
-
-				if var_511_17 == 1193046 then
-					local var_511_18, var_511_19, var_511_20 = rainbow(1)
-
-					var_511_17 = join_rgb(var_511_18 * 255, var_511_19 * 255, var_511_20 * 255)
-				end
-
-				local var_511_21 = var_0_7.ImVec4(bit.band(bit.rshift(var_511_17, 16), 255) / 255, bit.band(bit.rshift(var_511_17, 8), 255) / 255, bit.band(var_511_17, 255) / 255, 1)
-
-				var_0_7.TextColored(var_511_21, var_511_15)
-
-				var_511_21.x = var_511_21.x / 5
-				var_511_21.y = var_511_21.y / 5
-				var_511_21.z = var_511_21.z / 4
-
-				if iter_511_11 == 1 then
-					SlowShowHelp(table.concat({
-						string.format("{%06X}%s  %s", var_511_17, fa[iter_511_12.icon], var_0_19(iter_511_12.name)),
-						string.format("{AAAAAA}%s", var_0_19(iter_511_12.hint)),
-						var_0_19(string.format("Номер вашего аккаунта: %s", iter_511_12.count)),
-						var_0_19(" "),
-						var_0_19("{EEEEEE}Награда имеет несколько уровней:"),
-						"{FFFFFF}" .. fa.CHESS_PAWN .. var_0_19("{EEEEEE} - от 0 до 30 дней"),
-						"{00FFFF}" .. fa.CHESS_BISHOP .. var_0_19("{EEEEEE} - от 30 до 60 дней"),
-						"{7FFF00}" .. fa.CHESS_ROOK .. var_0_19("{EEEEEE} - от 60 до 90 дней"),
-						"{FF2E2E}" .. fa.CHESS_KNIGHT .. var_0_19("{EEEEEE} - от 90 до 120 дней"),
-						"{FFD700}" .. fa.CROWN .. var_0_19("{EEEEEE} - 120+ дней"),
-						var_0_19(" "),
-						var_0_19("{AAAAAA}Стандартная награда"),
-						var_0_19("{AAAAAA}Eсть у всех пользователей")
-					}, "\n"), 0, 999, var_511_21)
-				else
-					local var_511_22 = "{AAAAAA}Обычная награда"
-
-					if iter_511_12.rarity == 2 then
-						var_511_22 = "{AAFFAA}Редкая награда"
-					elseif iter_511_12.rarity == 3 then
-						var_511_22 = "{AADDFF}Сезонная награда"
-					elseif iter_511_12.rarity == 4 then
-						var_511_22 = "{FFDD00}Особая награда"
-					end
-
-					local var_511_23 = ""
-
-					if iter_511_12.rarity >= 2 and iter_511_12.count > 1 then
-						var_511_23 = ("\nЕсть%s у %d %s"):format(iter_511_12.count < 100 and " всего" or "", iter_511_12.count, plural(iter_511_12.count, {
-							"пользователя",
-							"пользователей",
-							"пользователей"
-						}))
-					end
-
-					SlowShowHelp(table.concat({
-						string.format("{%06X}%s  %s", var_511_17, fa[iter_511_12.icon], var_0_19(iter_511_12.name)),
-						string.format("{AAAAAA}%s", var_0_19(iter_511_12.hint)),
-						var_0_19(" "),
-						var_0_19(string.format("%s%s", var_511_22, var_511_23))
-					}, "\n"), 0, 999, var_511_21)
-				end
-
-				var_0_7.SameLine(nil, 10)
-			end
-		end
-
-		var_0_7.EndGroup()
-	end
 
 	local var_511_24 = var_0_7.GetScrollMaxX()
 
@@ -34610,19 +34508,7 @@ function mainSettingsRender()
 	var_0_7.EndChild()
 	var_0_7.AddCursorPos(0, 3)
 
-	if var_0_7.Button(fa.STAR .. "##activity", var_0_7.ImVec2(40, 25)) then
-		var_0_51.id = "activ"
-
-		net.activity.update()
-	end
-
 	var_0_7.SameLine()
-
-	if var_0_7.DarkButton(var_0_19("Настройки профиля##auth"), var_0_7.ImVec2(170, 25)) then
-		var_0_7.OpenPopup("##auth_profile")
-
-		var_0_20.hide_token = true
-	end
 
 	var_0_7.EndGroup()
 	var_0_7.SetNextWindowPos(var_0_7.ImVec2(sx / 2, sy / 2), var_0_7.Cond.Appearing, var_0_7.ImVec2(0.5, 0.5))
@@ -41310,8 +41196,6 @@ function reconStatsDraw()
 		var_0_7.ColumnTextCenter(var_0_19(var_606_11))
 		var_0_7.NextColumn()
 		var_0_7.Separator()
-		var_0_7.ColumnTextCenter(var_0_19("Клиент"))
-		var_0_7.NextColumn()
 
 		if recIP.stInfo.game.v == 0 then
 			var_0_7.ColumnTextCenter(var_0_19("SA:MP"), var_0_7.ImVec4(1, 0.5, 0.5, 1))
@@ -44854,7 +44738,6 @@ function var_0_18.onServerMessage(arg_680_0, arg_680_1)
 			if var_0_63.state.v then
 				var_0_63.step = 1
 
-				chatQueue("/apanel")
 			end
 		end
 
@@ -45210,8 +45093,6 @@ function var_0_18.onServerMessage(arg_680_0, arg_680_1)
 			orig = var_0_72.text,
 			lang = {}
 		}
-
-		chatQueue("/cl " .. var_680_94)
 
 		check.report_client = true
 		var_0_72.queue = {}
@@ -47014,7 +46895,7 @@ function var_0_18.onSendCommand(arg_711_0)
 
 	if var_711_0[1] == "/gps" and goto_gps.v then
 		return {
-			"/gotogps"
+			"/gps"
 		}
 	end
 
@@ -47612,17 +47493,14 @@ function var_0_18.onShowTextDraw(arg_716_0, arg_716_1)
 
 						var_0_20.qClient = var_0_20.qClient + 1
 
-						sampSendChat("/cl " .. var_716_2)
-						sampSendChat("/recon_update")
-
 						while var_0_72.dialog_busy do
 							wait(0)
 						end
 
 						if recIP.isSpec then
-							wait(250)
+							wait(1)
 
-							var_0_20.qCheck = var_0_20.qCheck + 1
+							var_0_20.qCheck = var_0_20.qCheck + 3
 							var_0_20.cars_timer = os.clock()
 
 							sampSendChat("/check " .. var_716_2)
@@ -47706,9 +47584,6 @@ function var_0_18.onTextDrawSetString(arg_718_0, arg_718_1)
 
 						var_0_20.qClient = var_0_20.qClient + 1
 
-						sampSendChat("/cl " .. var_718_1)
-						sampSendChat("/recon_update")
-
 						while var_0_72.dialog_busy do
 							wait(0)
 						end
@@ -47716,7 +47591,7 @@ function var_0_18.onTextDrawSetString(arg_718_0, arg_718_1)
 						if recIP.isSpec then
 							wait(250)
 
-							var_0_20.qCheck = var_0_20.qCheck + 1
+							var_0_20.qCheck = var_0_20.qCheck + 10
 							var_0_20.cars_timer = os.clock()
 
 							sampSendChat("/check " .. var_718_1)
@@ -47867,7 +47742,6 @@ function var_0_18.onShowDialog(arg_723_0, arg_723_1, arg_723_2, arg_723_3, arg_7
 				lang = {}
 			}
 
-			sampSendChat("/cl " .. var_0_72.id)
 
 			check.report_client = true
 			var_0_72.queue = {}
